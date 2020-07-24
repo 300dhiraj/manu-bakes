@@ -1,0 +1,43 @@
+<app-admin-header (change)="countChange($event)"></app-admin-header>
+
+<div>
+
+  <mat-card class="order-details">
+    <div class="row">
+      <div class="col-4">
+        <div>Order Number : {{order.orderNumber}}</div>
+      </div>
+      <div class="col-4">
+        <div>Customer Name : {{order.customerName}}</div>
+      </div>
+      <div class="col-4">
+        <div>Customer Address : {{order.customerAddress}}</div>
+      </div>
+      <div class="col-4">
+        <div>Bill Amount : {{order.billAmount}}</div>
+      </div>
+      <div class="col-4">
+        <div>Delivery Status : {{order.deliveryStatus}}</div>
+      </div>
+    </div>
+
+    <mat-chip-list aria-label="Fish selection">
+      <mat-chip color="primary" class="pointer" selected selected (click)="deliveryOrderDialog()">Order Delivered
+      </mat-chip>
+      <mat-chip color="warn" class="pointer" selected (click)="cancelOrderDialog()">Cancel Order</mat-chip>
+    </mat-chip-list>
+  </mat-card>
+
+  <div class="row">
+    <div class="col-3" *ngFor="let user of [1,2,3,4]; index as i; first as isFirst">
+      <div class="col-card">
+        <div><img src="https://www.w3schools.com/html/pic_trulli.jpg"><img></div>
+        <div>Product 1</div>
+        <div>1000 Gram</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<app-footer></app-footer>

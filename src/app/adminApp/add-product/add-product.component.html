@@ -1,0 +1,75 @@
+<app-admin-header (change)="countChange($event)"></app-admin-header>
+
+<div class="container">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)" class="form">
+
+    <div class="row">
+      <div class="col-4">
+        <mat-form-field floatLabel="never" class="form-element">
+          <input type="text" matInput placeholder="Product Name" formControlName="productName">
+          <mat-error *ngIf="formGroup.controls['productName'].invalid">
+            {{getError('productName')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-4">
+        <mat-form-field floatLabel="never" class="form-element">
+          <input type="text" matInput placeholder="Product Description" formControlName="productDescription">
+          <mat-error *ngIf="!formGroup.controls['productDescription'].valid">
+            {{getError('productDescription')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-4">
+        <mat-form-field floatLabel="never" class="form-element">
+          <input type="text" matInput placeholder="1000 Gram" formControlName="qnt1">
+          <mat-error *ngIf="!formGroup.controls['qnt1'].valid">
+            {{getError('qnt1')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-4">
+        <mat-form-field floatLabel="never" class="form-element">
+          <input type="text" matInput placeholder="750 Gram" formControlName="qnt2">
+          <mat-error *ngIf="!formGroup.controls['qnt2'].valid">
+            {{getError('qnt2')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-4">
+        <mat-form-field floatLabel="never" class="form-element">
+          <input type="text" matInput placeholder="500 Gram" formControlName="qnt3">
+          <mat-error *ngIf="!formGroup.controls['qnt3'].valid">
+            {{getError('qnt3')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-4">
+        <mat-form-field floatLabel="never" class="form-element">
+          <input type="text" matInput placeholder="250 Gram" formControlName="qnt4">
+          <mat-error *ngIf="!formGroup.controls['qnt4'].valid">
+            {{getError('qnt4')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-4">
+        <input type="file" placeholder="Product Image" formControlName="productImage">
+      </div>
+
+      <div class="col-4">
+        <div class="form-element">
+          <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid">Add
+            Product</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<app-footer></app-footer>

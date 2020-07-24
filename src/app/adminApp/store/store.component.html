@@ -1,0 +1,24 @@
+<app-admin-header (change)="countChange($event)"></app-admin-header>
+<div>
+  <div class="row">
+    <div class="col-3" *ngFor="let user of [1,2,3,4]; index as i; first as isFirst">
+      <div class="col-card">
+        <div><img src="https://www.w3schools.com/html/pic_trulli.jpg"><img></div>
+        <div>Product 1</div>
+        <div>Description : abcd efgh ijklmn opqrsst uv wxyz</div>
+        <div>1000 Gram 100Rs</div>
+        <div>750 Gram 75Rs</div>
+        <div>500 Gram 50Rs</div>
+        <div>250 Gram 25Rs</div>
+        <div>
+          <mat-checkbox>Disable Product</mat-checkbox>
+        </div>
+        <div>
+          <mat-checkbox>Out Of Stock</mat-checkbox>
+        </div>
+        <div><span class="material-icons deleteProductIcon float-rt pointer" (click)="deliveryOrderDialog()"> delete </span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

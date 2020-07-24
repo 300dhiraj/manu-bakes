@@ -1,0 +1,24 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+table {
+  width: 100%;
+}
+
+body {
+  font-family: Roboto, Arial, sans-serif;
+  margin: 0;
+}
+
+.basic-container {
+  padding: 30px;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+
+.filter{
+  margin: 10px;
+}
