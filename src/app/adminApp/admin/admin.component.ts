@@ -51,7 +51,7 @@ export class AdminComponent {
   }
 
   onSubmit(post) {
-    this.httpService.loginRequest(post).subscribe((responseBody: any) => {
+    this.httpService.login(post).subscribe((responseBody: any) => {
       if (responseBody.Success) {
         this.router.navigate(["/Dashboard"]);
       } else if (responseBody.Error) {

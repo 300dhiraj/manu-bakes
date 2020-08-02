@@ -1,16 +1,15 @@
 <app-admin-header (change)="countChange($event)"></app-admin-header>
 <div>
   <div class="row">
-    <div
-      class="col-4"
-      *ngFor="let user of [1, 2, 3, 4]; index as i; first as isFirst"
-    >
+    <div class="col-4" *ngFor="let product of products; index as i">
       <div class="col-card">
         <div>
           <img src="https://www.w3schools.com/html/pic_trulli.jpg" /><img />
         </div>
         <div class="row">
-          <div class="col-6"><b>Product 1</b></div>
+          <div class="col-6">
+            <b>{{ product.productName }}</b>
+          </div>
           <div class="col-6">
             <span
               class="material-icons deleteProductIcon float-rt pointer"
@@ -22,31 +21,39 @@
         </div>
         <div class="row">
           <div class="col-12">
-            Description : abcd efgh ijklmn opqrsst uv wxyz
+            {{ product.productDescription }}
           </div>
         </div>
         <div class="row">
           <div class="col-6">2 Kg</div>
-          <div class="col-6">100Rs</div>
+          <div class="col-6">{{ product.price1 }} Rs</div>
         </div>
         <div class="row">
           <div class="col-6">1 Kg</div>
-          <div class="col-6">500Rs</div>
+          <div class="col-6">{{ product.price2 }} Rs</div>
         </div>
         <div class="row">
           <div class="col-6">1/2 Kg</div>
-          <div class="col-6">250Rs</div>
+          <div class="col-6">{{ product.price3 }} Rs</div>
         </div>
         <div class="row">
           <div class="col-6">1/4 Kg</div>
-          <div class="col-6">100Rs</div>
+          <div class="col-6">{{ product.price4 }} Rs</div>
         </div>
         <div class="row">
           <div class="col-6">
-            <mat-checkbox>Disable Product</mat-checkbox>
+            <mat-checkbox
+              (change)="disableProduct($event.checked, product.id)"
+              [checked]="product.disable"
+              >Disable Product</mat-checkbox
+            >
           </div>
           <div class="col-6">
-            <mat-checkbox>Out Of Stock</mat-checkbox>
+            <mat-checkbox
+              (change)="outOfStock($event.checked, product.id)"
+              [checked]="product.outOfStock"
+              >Out Of Stock</mat-checkbox
+            >
           </div>
         </div>
       </div>

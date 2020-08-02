@@ -1,13 +1,12 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { HttpHeaders } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root",
 })
 export class HttpService {
-  apiBaseUrl = "http://localhost/Api/index.php?";
+  apiBaseUrl = "http://localhost/manu-bakes/Api/index.php?";
 
   constructor(private httpClient: HttpClient) {}
 
@@ -15,7 +14,15 @@ export class HttpService {
     return this.httpClient.get(this.apiBaseUrl);
   }
 
-  loginRequest(data: Object): Observable<Object> {
+  login(data: Object): Observable<Object> {
     return this.httpClient.post(this.apiBaseUrl + "Login", data);
+  }
+
+  getProduct() {
+    return this.httpClient.get(this.apiBaseUrl + "GetProduct");
+  }
+
+  addProduct(data: Object): Observable<Object> {
+    return this.httpClient.post(this.apiBaseUrl + "AddProduct", data);
   }
 }

@@ -13,8 +13,15 @@ if ( !$API_NAME ) {
 
 switch( $API_NAME ) {
     case 'Login' :
+    LoginFn( $conn );
+    break;
 
-    Login( $conn );
+    case 'GetProduct' :
+    GetProductFn( $conn );
+    break;
+
+    case 'AddProduct' :
+    AddProductFn( $conn );
     break;
 
     default:
@@ -38,7 +45,7 @@ function Success( $data ) {
     Encode_Data( $Obj );
 }
 
-function Check_Json() {
+function GetPostJson() {
     //Make sure that it is a POST request.
     if ( strcasecmp( $_SERVER['REQUEST_METHOD'], 'POST' ) != 0 ) {
         Error( 'Request method must be POST!' );
@@ -56,30 +63,6 @@ function Check_Json() {
     //Attempt to decode the incoming RAW post data from JSON.
     $decoded = json_decode( $content, true );
     return $decoded;
-}
-
-function Login( $conn ) {
-    $post = Check_Json();
-    $username = mysqli_real_escape_string( $conn, $post['username'] );
-    $password = mysqli_real_escape_string( $conn, $post['password'] );
-
-    $sql = "SELECT * FROM admin WHERE username = '$username' and password = '$password'";
-    $result = $conn->query( $sql );
-
-    if ( $result->num_rows > 0 ) {
-        while( $row = $result->fetch_assoc() ) {
-            $token = microtime();
-
-            $sql = "UPDATE admin SET session='".$token."' WHERE username = '$username'";
-            $conn->query( $sql );
-
-            $Obj =  new \stdClass();
-            $Obj->token = $token;
-            Success( $Obj );
-        }
-    } else {
-        Error( 'Your Login Name or Password is invalid' );
-    }
 }
 
 function CheckValidSession( $conn ) {
@@ -107,6 +90,73 @@ function GetAuthorization() {
     }
 
     return $Authorization;
+}
+
+function LoginFn( $conn ) {
+    $post = GetPostJson();
+    $username = mysqli_real_escape_string( $conn, $post['username'] );
+    $password = mysqli_real_escape_string( $conn, $post['password'] );
+
+    $sql = "SELECT * FROM admin WHERE username = '$username' and password = '$password'";
+    $result = $conn->query( $sql );
+
+    if ( $result->num_rows > 0 ) {
+        while( $row = $result->fetch_assoc() ) {
+            $token = microtime();
+
+            $sql = "UPDATE admin SET session='".$token."' WHERE username = '$username'";
+            $conn->query( $sql );
+
+            $Obj =  new \stdClass();
+            $Obj->token = $token;
+            Success( $Obj );
+        }
+    } else {
+        Error( 'Your Login Name or Password is invalid' );
+    }
+}
+
+function GetProductFn( $conn ) {
+    $sql = 'SELECT * FROM products';
+    $result = $conn->query( $sql );
+
+    if ( $result->num_rows > 0 ) {
+        $Obj =  new \stdClass();
+        $productsArr = array();
+
+        while( $row = $result->fetch_assoc() ) {
+            array_push( $productsArr, $row );
+        }
+
+        $Obj->products = $productsArr;
+        Success( $Obj );
+    } else {
+        Error( 'Error: ' . $sql . '<br>' . $conn->error );
+    }
+}
+
+function AddProductFn( $conn ) {
+    $post = GetPostJson();
+    $productType = mysqli_real_escape_string( $conn, $post['productType'] );
+    $productName = mysqli_real_escape_string( $conn, $post['productName'] );
+    $productDescription = mysqli_real_escape_string( $conn, $post['productDescription'] );
+    $price1 = mysqli_real_escape_string( $conn, $post['price1'] );
+    $price2 = mysqli_real_escape_string( $conn, $post['price2'] );
+    $price3 = mysqli_real_escape_string( $conn, $post['price3'] );
+    $price4 = mysqli_real_escape_string( $conn, $post['price4'] );
+    $image = 1;
+    //mysqli_real_escape_string( $conn, $post['image'] );
+
+    $sql = "INSERT INTO products (productType, productName, productDescription, price1,price2,price3,price4,image,disable,outOfStock) VALUES ('".$productType."', '".$productName."', '".$productDescription."', $price1,$price2,$price3,$price4,$image,false,false)";
+
+    if ( $conn->query( $sql ) === TRUE ) {
+        $Obj =  new \stdClass();
+        $Obj->msg = 'New record created successfully';
+        $Obj->last_id = $conn->insert_id;
+        Success( $Obj );
+    } else {
+        Error( 'Error: ' . $sql . '<br>' . $conn->error );
+    }
 }
 
 ?>
