@@ -1,25 +1,46 @@
 <div class="container">
-
-  <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)" class="form ">
-    <h1 class="login-header"> Admin </h1>
+  <form
+    [formGroup]="formGroup"
+    (ngSubmit)="onSubmit(formGroup.value)"
+    class="form"
+  >
+    <h1 class="cntr">Admin</h1>
     <mat-form-field floatLabel="never" class="form-element">
-      <input type="text" matInput placeholder="Username" formControlName="username">
+      <input
+        type="text"
+        matInput
+        placeholder="Username"
+        formControlName="username"
+      />
       <mat-error *ngIf="formGroup.controls['username'].invalid">
-        {{getError('user')}}
+        {{ getError("user") }}
       </mat-error>
     </mat-form-field>
 
     <mat-form-field floatLabel="never" class="form-element">
-      <input type="password" matInput placeholder="Password" formControlName="password">
+      <input
+        type="password"
+        matInput
+        placeholder="Password"
+        formControlName="password"
+      />
       <mat-error *ngIf="!formGroup.controls['password'].valid">
-        {{getError('pass')}}
+        {{ getError("pass") }}
       </mat-error>
     </mat-form-field>
 
     <div class="form-element">
-      <button mat-raised-button color="primary" type="submit" class="button"
-        [disabled]="!formGroup.valid">Login</button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        class="button"
+        [disabled]="!formGroup.valid"
+      >
+        Login
+      </button>
     </div>
 
+    <div class="cntr red-clr">{{ loginError }}</div>
   </form>
 </div>
