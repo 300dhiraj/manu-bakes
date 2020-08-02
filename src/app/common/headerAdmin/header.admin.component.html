@@ -2,10 +2,10 @@
   <span class="pointer" [routerLink]="['/Dashboard/']"> Manu Bakes</span>
   <span class="fill-remaining-space"></span>
   <span class="material-icons icon-margin pointer" [routerLink]="['/Dashboard/']" matTooltip="Home"> home </span>
+  <span class="material-icons icon-margin pointer" [routerLink]="['/Store/']" matTooltip="Store"> store </span>
   <span class="material-icons icon-margin pointer" selected selected (click)="deliveryOrderDialog()"
     *ngIf="showAddStore" [routerLink]="['/AddProduct/']" matTooltip="Add Product"> add_circle </span>
-  <span class="material-icons icon-margin pointer" [routerLink]="['/Store/']" matTooltip="Store"> store </span>
-  <span class="material-icons icon-margin pointer" [routerLink]="['/Setting/']" matTooltip="Settings"> settings </span>
+  <!-- <span class="material-icons icon-margin pointer" [routerLink]="['/Setting/']" matTooltip="Settings"> settings </span> -->
   <button mat-button [matMenuTriggerFor]="menu" *ngIf="showFilter">
     <span class="material-icons" matTooltip="Filter Orders"> filter_alt </span>
   </button>
@@ -15,6 +15,7 @@
     <button mat-menu-item (click)="filter('Cancaled')">Cancaled</button>
     <button mat-menu-item (click)="filter('Completed')">Completed</button>
   </mat-menu>
+  <span class="material-icons pointer" [class.icon-margin]="!showFilter" matTooltip="Exit">exit_to_app</span>
 </mat-toolbar>
 
 <mat-progress-bar color="warn" mode="indeterminate" *ngIf="progressBarVisible"></mat-progress-bar>

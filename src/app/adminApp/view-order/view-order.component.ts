@@ -26,6 +26,7 @@ export class ViewOrderComponent implements OnInit {
       orderNumber: 101,
       customerAddress: 'Bgm',
       billAmount: 12,
+      deliveryContact: 9035807655,
       deliveryStatus: 'Pending',
     };
   }
@@ -53,6 +54,7 @@ export interface OrderDetail {
   orderNumber: number;
   customerAddress: string;
   billAmount: number;
+  deliveryContact: number,
   deliveryStatus: string;
 }
 

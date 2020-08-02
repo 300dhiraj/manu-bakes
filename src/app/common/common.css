@@ -86,3 +86,7 @@
 .pointer {
   cursor: pointer;
 }
+
+.cntr{
+  text-align: center;
+}

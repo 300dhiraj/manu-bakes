@@ -15,8 +15,8 @@
   margin: auto;
   padding: 20px;
   border: 1px solid;
-  box-shadow: 5px 10px #888888;
-  margin-top: 10%;
+  box-shadow: 0px 0px 5px 5px #cccccc;
+  margin-top: 7%;
 }
 
 .form-element {
@@ -26,4 +26,8 @@
 
 .button {
   width: 100%;
+}
+
+.login-header{
+  text-align: center;
 }

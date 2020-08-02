@@ -1,22 +1,54 @@
 <app-admin-header (change)="countChange($event)"></app-admin-header>
 <div>
   <div class="row">
-    <div class="col-3" *ngFor="let user of [1,2,3,4]; index as i; first as isFirst">
+    <div
+      class="col-4"
+      *ngFor="let user of [1, 2, 3, 4]; index as i; first as isFirst"
+    >
       <div class="col-card">
-        <div><img src="https://www.w3schools.com/html/pic_trulli.jpg"><img></div>
-        <div>Product 1</div>
-        <div>Description : abcd efgh ijklmn opqrsst uv wxyz</div>
-        <div>1000 Gram 100Rs</div>
-        <div>750 Gram 75Rs</div>
-        <div>500 Gram 50Rs</div>
-        <div>250 Gram 25Rs</div>
         <div>
-          <mat-checkbox>Disable Product</mat-checkbox>
+          <img src="https://www.w3schools.com/html/pic_trulli.jpg" /><img />
         </div>
-        <div>
-          <mat-checkbox>Out Of Stock</mat-checkbox>
+        <div class="row">
+          <div class="col-6"><b>Product 1</b></div>
+          <div class="col-6">
+            <span
+              class="material-icons deleteProductIcon float-rt pointer"
+              (click)="deliveryOrderDialog()"
+            >
+              delete
+            </span>
+          </div>
         </div>
-        <div><span class="material-icons deleteProductIcon float-rt pointer" (click)="deliveryOrderDialog()"> delete </span></div>
+        <div class="row">
+          <div class="col-12">
+            Description : abcd efgh ijklmn opqrsst uv wxyz
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">2 Kg</div>
+          <div class="col-6">100Rs</div>
+        </div>
+        <div class="row">
+          <div class="col-6">1 Kg</div>
+          <div class="col-6">500Rs</div>
+        </div>
+        <div class="row">
+          <div class="col-6">1/2 Kg</div>
+          <div class="col-6">250Rs</div>
+        </div>
+        <div class="row">
+          <div class="col-6">1/4 Kg</div>
+          <div class="col-6">100Rs</div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <mat-checkbox>Disable Product</mat-checkbox>
+          </div>
+          <div class="col-6">
+            <mat-checkbox>Out Of Stock</mat-checkbox>
+          </div>
+        </div>
       </div>
     </div>
   </div>

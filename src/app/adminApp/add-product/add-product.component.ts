@@ -20,6 +20,7 @@ export class AddProductComponent {
 
   createForm() {
     this.formGroup = this.formBuilder.group({
+      'productType': ['', Validators.required],
       'productName': ['', Validators.required],
       'productDescription': ['', Validators.required],
       'qnt1': ['', Validators.required],
@@ -32,6 +33,12 @@ export class AddProductComponent {
 
   getError(el) {
     switch (el) {
+      case 'productType':
+        if (this.formGroup.get('productType').hasError('required')) {
+          return 'Product Type Required';
+        }
+        break;
+
       case 'productName':
         if (this.formGroup.get('productName').hasError('required')) {
           return 'Product Name Required';
