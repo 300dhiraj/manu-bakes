@@ -58,4 +58,11 @@ export class HttpService {
   deleteProduct(data: Object): Observable<Object> {
     return this.httpClient.post(this.apiBaseUrl + "deleteProduct", data);
   }
+
+  getOrders() {
+    return this.httpClient.get(
+      this.apiBaseUrl + "GetOrders",
+      this.getHeader()
+    );
+  }
 }

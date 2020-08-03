@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Aug 03, 2020 at 10:38 AM
+-- Generation Time: Aug 03, 2020 at 11:45 AM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 7.3.12
 
@@ -42,7 +42,45 @@ CREATE TABLE IF NOT EXISTS `admin` (
 --
 
 INSERT INTO `admin` (`id`, `username`, `password`, `session`) VALUES
-(1, 'manu', 'manu', '0.96637500 1596445057');
+(1, 'manu', 'manu', '0.60670300 1596454013');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orders`
+--
+
+DROP TABLE IF EXISTS `orders`;
+CREATE TABLE IF NOT EXISTS `orders` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customerName` varchar(250) NOT NULL,
+  `billAmount` varchar(250) NOT NULL,
+  `customerAddress` varchar(250) NOT NULL,
+  `contactNumber` varchar(15) NOT NULL,
+  `deliveryStatus` varchar(250) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `customerName`, `billAmount`, `customerAddress`, `contactNumber`, `deliveryStatus`) VALUES
+(1, 'Dhiraj', '121', 'BGm', '9035807655', 'Pending'),
+(2, 'Dhiraj', '121', 'BGm', '', 'Pending'),
+(3, 'Dhiraj', '121', 'BGm', '', 'Pending'),
+(4, 'Dhiraj', '121', 'BGm', '', 'Pending'),
+(5, 'Dhiraj', '121', 'BGm', '', 'Pending'),
+(6, 'Dhiraj', '121', 'BGm', '', 'Pending'),
+(7, 'Dhiraj', '121', 'BGm', '', 'Pending'),
+(8, 'Dhiraj', '121', 'BGm', '', 'Pending'),
+(9, 'Dhiraj', '121', 'BGm', '', 'Pending'),
+(10, 'Dhiraj', '121', 'BGm', '', 'Pending'),
+(11, 'Dhiraj', '121', 'BGm', '', 'Pending'),
+(12, 'Dhiraj', '121', 'BGm', '', 'Pending'),
+(13, 'Dhiraj', '121', 'BGm', '', 'Cancaled'),
+(14, 'Dhiraj', '121', 'BGm', '', 'Completed'),
+(15, 'Dhiraj', '121', 'BGm', '', 'Completed');
 
 -- --------------------------------------------------------
 

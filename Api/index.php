@@ -36,6 +36,11 @@ switch( $API_NAME ) {
     deleteProductFn( $conn );
     break;
 
+    case 'GetOrders' :
+    // CheckValidSession( $conn );
+    GetOrdersFn( $conn );
+    break;
+
     default:
     CheckValidSession( $conn );
 }
@@ -199,6 +204,25 @@ function deleteProductFn( $conn ) {
         Success( $Obj );
     } else {
         echo 'Error deleting record: ' . $conn->error;
+    }
+}
+
+function GetOrdersFn( $conn ) {
+    $sql = 'SELECT * FROM orders';
+    $result = $conn->query( $sql );
+
+    if ( $result->num_rows > 0 ) {
+        $Obj =  new \stdClass();
+        $ordersArr = array();
+
+        while( $row = $result->fetch_assoc() ) {
+            array_push( $ordersArr, $row );
+        }
+
+        $Obj->orders = $ordersArr;
+        Success( $Obj );
+    } else {
+        Error( 'Error: ' . $sql . '<br>' . $conn->error );
     }
 }
 

@@ -1,22 +1,44 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { SelectionModel } from '@angular/cdk/collections';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
+import { SelectionModel } from "@angular/cdk/collections";
+import { HttpService } from "../services/http.service";
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css', '../../common/common.css']
+  selector: "app-dashboard",
+  templateUrl: "./dashboard.component.html",
+  styleUrls: ["./dashboard.component.css", "../../common/common.css"],
 })
-
 export class DashboardComponent implements OnInit {
-  displayedColumns: string[] = [/*'select',*/ 'orderNumber', 'customerName', 'customerAddress', 'billAmount', 'deliveryStatus', 'view'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  displayedColumns: string[] = [
+    /*'select',*/ "id",
+    "customerName",
+    "customerAddress",
+    "billAmount",
+    "contactNumber",
+    "deliveryStatus",
+    "view",
+  ];
+  dataSet: PeriodicElement[] = [];
+  dataSource = new MatTableDataSource<PeriodicElement>(this.dataSet);
   selection = new SelectionModel<PeriodicElement>(true, []);
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  constructor(private httpService: HttpService) {}
+
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
+    this.httpService.getOrders().subscribe((responseBody: any) => {
+      if (responseBody.Success) {
+        this.dataSource = new MatTableDataSource<PeriodicElement>(
+          responseBody.Success.orders
+        );
+        this.dataSource.paginator = this.paginator;
+
+        this.dataSet = responseBody.Success.orders;
+      } else if (responseBody.Error) {
+        this.httpService.HandleError(responseBody.Error);
+      }
+    });
   }
 
   isAllSelected() {
@@ -27,17 +49,19 @@ export class DashboardComponent implements OnInit {
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.dataSource.data.forEach((row) => this.selection.select(row));
   }
 
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: PeriodicElement): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+      return `${this.isAllSelected() ? "select" : "deselect"} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.orderNumber + 1}`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${
+      row.id + 1
+    }`;
   }
 
   applyFilter(event: Event) {
@@ -46,7 +70,13 @@ export class DashboardComponent implements OnInit {
   }
 
   countChange(event) {
-    let DATA = event ? ELEMENT_DATA.filter((order) => { if (order.deliveryStatus == event) { return order } }) : ELEMENT_DATA;
+    let DATA = event
+      ? this.dataSet.filter((order) => {
+          if (order.deliveryStatus == event) {
+            return order;
+          }
+        })
+      : this.dataSet;
     this.dataSource = new MatTableDataSource<PeriodicElement>(DATA);
     this.dataSource.paginator = this.paginator;
   }
@@ -54,35 +84,9 @@ export class DashboardComponent implements OnInit {
 
 export interface PeriodicElement {
   customerName: string;
-  orderNumber: number;
+  id: number;
   customerAddress: string;
   billAmount: number;
+  contactNumber: string;
   deliveryStatus: string;
 }
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  { orderNumber: 1, customerName: 'Hydrogen', billAmount: 1.0079, customerAddress: 'H', deliveryStatus: 'Pending' },
-  { orderNumber: 2, customerName: 'Helium', billAmount: 4.0026, customerAddress: 'He', deliveryStatus: 'Pending' },
-  { orderNumber: 3, customerName: 'Lithium', billAmount: 6.941, customerAddress: 'Li', deliveryStatus: 'Pending' },
-  { orderNumber: 4, customerName: 'Beryllium', billAmount: 9.0122, customerAddress: 'Be', deliveryStatus: 'Pending' },
-  { orderNumber: 5, customerName: 'Boron', billAmount: 10.811, customerAddress: 'B', deliveryStatus: 'Pending' },
-  { orderNumber: 6, customerName: 'Carbon', billAmount: 12.0107, customerAddress: 'C', deliveryStatus: 'Pending' },
-  { orderNumber: 7, customerName: 'Nitrogen', billAmount: 14.0067, customerAddress: 'N', deliveryStatus: 'Pending' },
-  { orderNumber: 8, customerName: 'Oxygen', billAmount: 15.9994, customerAddress: 'O', deliveryStatus: 'Pending' },
-  { orderNumber: 9, customerName: 'Fluorine', billAmount: 18.9984, customerAddress: 'F', deliveryStatus: 'Cancaled' },
-  { orderNumber: 10, customerName: 'Neon', billAmount: 20.1797, customerAddress: 'Ne', deliveryStatus: 'Cancaled' },
-  { orderNumber: 11, customerName: 'Sodium', billAmount: 22.9897, customerAddress: 'Na', deliveryStatus: 'Cancaled' },
-  { orderNumber: 12, customerName: 'Magnesium', billAmount: 24.305, customerAddress: 'Mg', deliveryStatus: 'Cancaled' },
-  { orderNumber: 13, customerName: 'Aluminum', billAmount: 26.9815, customerAddress: 'Al', deliveryStatus: 'Cancaled' },
-  { orderNumber: 14, customerName: 'Silicon', billAmount: 28.0855, customerAddress: 'Si', deliveryStatus: 'Completed' },
-  { orderNumber: 15, customerName: 'Phosphorus', billAmount: 30.9738, customerAddress: 'P', deliveryStatus: 'Completed' },
-  { orderNumber: 16, customerName: 'Sulfur', billAmount: 32.065, customerAddress: 'S', deliveryStatus: 'Completed' },
-  { orderNumber: 17, customerName: 'Chlorine', billAmount: 35.453, customerAddress: 'Cl', deliveryStatus: 'Completed' },
-  { orderNumber: 18, customerName: 'Argon', billAmount: 39.948, customerAddress: 'Ar', deliveryStatus: 'Completed' },
-  { orderNumber: 19, customerName: 'Potassium', billAmount: 39.0983, customerAddress: 'K', deliveryStatus: 'Completed' },
-  { orderNumber: 20, customerName: 'Calcium', billAmount: 40.078, customerAddress: 'Ca', deliveryStatus: 'Completed' },
-];
-
-/**  Copyright 2019 Google LLC. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at http://angular.io/license */
