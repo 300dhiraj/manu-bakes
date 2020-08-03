@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { DeliveryConfirmationDialogComponent } from "../dialog/delivery-confirmation-dialog/delivery-confirmation-dialog.component";
 import { HttpService } from "../services/http.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-store",
@@ -10,34 +11,65 @@ import { HttpService } from "../services/http.service";
 })
 export class StoreComponent implements OnInit {
   products: any = [];
-  constructor(public dialog: MatDialog, private httpService: HttpService) {}
+  constructor(
+    public dialog: MatDialog,
+    private httpService: HttpService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
+    this.getProductList();
+  }
+
+  getProductList() {
     this.httpService.getProduct().subscribe((responseBody: any) => {
-      console.log("responseBody : ", responseBody);
       if (responseBody.Success) {
-        console.log("responseBody.products : ", responseBody.Success.products);
         this.products = responseBody.Success.products;
       } else if (responseBody.Error) {
-        console.log(responseBody.Error);
+        this.httpService.HandleError(responseBody.Error);
       }
     });
   }
 
   countChange(event) {}
 
-  deliveryOrderDialog() {
+  deliveryOrderDialog(id) {
     const dialogRef = this.dialog.open(DeliveryConfirmationDialogComponent);
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
+      if (result) {
+        this.httpService
+          .deleteProduct({ id: id })
+          .subscribe((responseBody: any) => {
+            if (responseBody.Success) {
+              this.getProductList();
+            } else if (responseBody.Error) {
+              this.httpService.HandleError(responseBody.Error);
+            }
+          });
+      }
     });
   }
 
   disableProduct(flag, id) {
-    console.log("RES", flag, id);
+    this.setProdFlag({
+      id: id,
+      disable: flag ? 1 : 0,
+    });
   }
 
   outOfStock(flag, id) {
-    console.log("RES", flag, id);
+    this.setProdFlag({
+      id: id,
+      outOfStock: flag ? 1 : 0,
+    });
+  }
+
+  setProdFlag(data: object) {
+    this.httpService.setProductFlags(data).subscribe((responseBody: any) => {
+      if (responseBody.Success) {
+      } else if (responseBody.Error) {
+        this.httpService.HandleError(responseBody.Error);
+      }
+    });
   }
 }

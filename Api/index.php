@@ -2,7 +2,7 @@
 
 include( 'config.php' );
 header( 'Access-Control-Allow-Origin: *' );
-header( 'Access-Control-Allow-Headers: Content-Type' );
+header( 'Access-Control-Allow-Headers: Authorization,Content-Type' );
 
 $REQUEST_METHOD = $_SERVER['REQUEST_METHOD'];
 $API_NAME = $_SERVER['QUERY_STRING'];
@@ -17,11 +17,23 @@ switch( $API_NAME ) {
     break;
 
     case 'GetProduct' :
+    // CheckValidSession( $conn );
     GetProductFn( $conn );
     break;
 
     case 'AddProduct' :
+    // CheckValidSession( $conn );
     AddProductFn( $conn );
+    break;
+
+    case 'SetProductFlags' :
+    // CheckValidSession( $conn );
+    SetProductFlagsFn( $conn );
+    break;
+
+    case 'deleteProduct' :
+    // CheckValidSession( $conn );
+    deleteProductFn( $conn );
     break;
 
     default:
@@ -71,14 +83,9 @@ function CheckValidSession( $conn ) {
     $sql = "SELECT * FROM admin WHERE session = '$Authorization'";
     $result = $conn->query( $sql );
 
-    if ( $result->num_rows > 0 ) {
-        while( $row = $result->fetch_assoc() ) {
-            Success( 'Valid' );
-        }
-    } else {
+    if ( ! $result->num_rows > 0 ) {
         Error( 'Your Login Name or Password is invalid' );
     }
-
 }
 
 function GetAuthorization() {
@@ -156,6 +163,42 @@ function AddProductFn( $conn ) {
         Success( $Obj );
     } else {
         Error( 'Error: ' . $sql . '<br>' . $conn->error );
+    }
+}
+
+function SetProductFlagsFn( $conn ) {
+    $post = GetPostJson();
+    $id = mysqli_real_escape_string( $conn, $post['id'] );
+    $sql = '';
+
+    if ( array_key_exists( 'disable', $post ) ) {
+        $disable = mysqli_real_escape_string( $conn, $post['disable'] );
+        $sql = 'UPDATE products SET disable='.$disable." WHERE id = $id";
+    } else if ( array_key_exists( 'outOfStock', $post ) ) {
+        $outOfStock = mysqli_real_escape_string( $conn, $post['outOfStock'] );
+        $sql = 'UPDATE products SET outOfStock='.$outOfStock." WHERE id = $id";
+    }
+
+    if ( $conn->query( $sql ) === TRUE ) {
+        $Obj =  new \stdClass();
+        $Obj->msg = 'Record updated successfully';
+        Success( $Obj );
+    } else {
+        Error( 'Error: ' . $sql . '<br>' . $conn->error );
+    }
+}
+
+function deleteProductFn( $conn ) {
+    $post = GetPostJson();
+    $id = mysqli_real_escape_string( $conn, $post['id'] );
+    $sql = 'DELETE FROM products WHERE id = '.$id;
+
+    if ( $conn->query( $sql ) === TRUE ) {
+        $Obj =  new \stdClass();
+        $Obj->msg = 'Record deleted successfully';
+        Success( $Obj );
+    } else {
+        echo 'Error deleting record: ' . $conn->error;
     }
 }
 

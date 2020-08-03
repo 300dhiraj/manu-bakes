@@ -53,6 +53,7 @@ export class AdminComponent {
   onSubmit(post) {
     this.httpService.login(post).subscribe((responseBody: any) => {
       if (responseBody.Success) {
+        this.httpService.token = responseBody.Success.token;
         this.router.navigate(["/Dashboard"]);
       } else if (responseBody.Error) {
         this.loginError = responseBody.Error;

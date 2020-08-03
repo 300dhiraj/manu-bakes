@@ -86,7 +86,7 @@ export class AddProductComponent {
       if (responseBody.Success) {
         this.router.navigate(["/Store"]);
       } else if (responseBody.Error) {
-        console.log(responseBody.Error);
+        this.httpService.HandleError(responseBody.Error);
       }
     });
   }
