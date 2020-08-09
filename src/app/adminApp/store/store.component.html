@@ -1,10 +1,10 @@
 <app-admin-header (change)="countChange($event)"></app-admin-header>
 <div>
   <div class="row">
-    <div class="col-4" *ngFor="let product of products; index as i">
+    <div class="col-3" *ngFor="let product of products; index as i">
       <div class="col-card">
         <div>
-          <img src="https://www.w3schools.com/html/pic_trulli.jpg" /><img />
+          <img [src]="product.image" /><img />
         </div>
         <div class="row">
           <div class="col-6">

@@ -76,16 +76,20 @@
 
       <div class="col-4">
         <div class="form-element">
-          <button mat-raised-button color="primary" class="button">Add
-            Image</button>
+          <label for="files" class="btn">Select Image <span class="material-icons">add_a_photo</span></label>
+          <input id="files" style="visibility:hidden;" type="file" accept="image/*" (change)="handleFileInput($event.target.files)">
         </div>       
       </div>
 
       <div class="col-4">
         <div class="form-element">
-          <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid">Add
+          <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup.valid || !isImageUploaded">Add
             Product</button>
         </div>
+      </div>
+
+      <div class="col-12">
+        <img class="uploadedProdImage" *ngIf="fileToUpload" [src]="fileToUpload">
       </div>
     </div>
   </form>

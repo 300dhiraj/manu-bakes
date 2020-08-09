@@ -10,6 +10,8 @@ import { HttpService } from "../services/http.service";
 })
 export class AddProductComponent {
   formGroup: FormGroup;
+  fileToUpload;
+  isImageUploaded = false;
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -82,6 +84,7 @@ export class AddProductComponent {
   }
 
   onSubmit(post) {
+    post.image = this.fileToUpload;
     this.httpService.addProduct(post).subscribe((responseBody: any) => {
       if (responseBody.Success) {
         this.router.navigate(["/Store"]);
@@ -92,4 +95,20 @@ export class AddProductComponent {
   }
 
   countChange() {}
+
+  handleFileInput(files: FileList) {
+    const file = files.item(0);
+    const fsize = Math.round(file.size / 1024);
+    if (fsize >= 512) {
+      alert("File too Big, please select a file less than 512Kb");
+      return;
+    } 
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.fileToUpload = reader.result;
+      this.isImageUploaded = true;
+    };
+  }
 }

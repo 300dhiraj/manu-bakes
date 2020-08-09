@@ -156,10 +156,9 @@ function AddProductFn( $conn ) {
     $price2 = mysqli_real_escape_string( $conn, $post['price2'] );
     $price3 = mysqli_real_escape_string( $conn, $post['price3'] );
     $price4 = mysqli_real_escape_string( $conn, $post['price4'] );
-    $image = 1;
-    //mysqli_real_escape_string( $conn, $post['image'] );
+    $image = $post['image'];;
 
-    $sql = "INSERT INTO products (productType, productName, productDescription, price1,price2,price3,price4,image,disable,outOfStock) VALUES ('".$productType."', '".$productName."', '".$productDescription."', $price1,$price2,$price3,$price4,$image,false,false)";
+    $sql = "INSERT INTO products (productType, productName, productDescription, price1,price2,price3,price4,image,disable,outOfStock) VALUES ('".$productType."', '".$productName."', '".$productDescription."', $price1,$price2,$price3,$price4,'".$image."',false,false)";
 
     if ( $conn->query( $sql ) === TRUE ) {
         $Obj =  new \stdClass();
@@ -169,6 +168,12 @@ function AddProductFn( $conn ) {
     } else {
         Error( 'Error: ' . $sql . '<br>' . $conn->error );
     }
+
+    //$img = $post['image'];
+    //$sql = "INSERT INTO productimages (image) VALUES ('".$img."')";
+    //echo $sql;
+    //$res = $conn->query( $sql );
+    //echo $res;
 }
 
 function SetProductFlagsFn( $conn ) {
