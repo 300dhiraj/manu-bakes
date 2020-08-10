@@ -60,9 +60,14 @@ export class HttpService {
   }
 
   getOrders() {
-    return this.httpClient.get(
-      this.apiBaseUrl + "GetOrders",
-      this.getHeader()
-    );
+    return this.httpClient.get(this.apiBaseUrl + "GetOrders", this.getHeader());
+  }
+
+  getOrderDetails(data: Object) {
+    return this.httpClient.post(this.apiBaseUrl + "GetOrderDetails", data);
+  }
+
+  UpdateDeliveryStatus(data: Object) {
+    return this.httpClient.post(this.apiBaseUrl + "UpdateDeliveryStatus", data);
   }
 }

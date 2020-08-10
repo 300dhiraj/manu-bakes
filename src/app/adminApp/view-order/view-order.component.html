@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row" *ngIf="order.deliveryStatus == 'Pending'">
       <div class="col-12">
         <mat-chip-list aria-label="Fish selection">
           <mat-chip
@@ -48,15 +48,13 @@
 
   <div class="row">
     <div
-      class="col-4"
-      *ngFor="let user of [1, 2, 3, 4]; index as i; first as isFirst"
+      class="col-3"
+      *ngFor="let product of products; index as i; first as isFirst"
     >
       <div class="col-card">
-        <div>
-          <img src="https://www.w3schools.com/html/pic_trulli.jpg" /><img />
-        </div>
-        <div>Product 1</div>
-        <div>1 Kg</div>
+        <div><img [src]="product.image" /><img /></div>
+        <div>{{ product.productType }} : {{ product.productName }}</div>
+        <div>{{ product.quantity }}</div>
       </div>
     </div>
   </div>

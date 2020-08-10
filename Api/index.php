@@ -41,6 +41,16 @@ switch( $API_NAME ) {
     GetOrdersFn( $conn );
     break;
 
+    case 'GetOrderDetails' :
+    // CheckValidSession( $conn );
+    GetOrderDetailsFn( $conn );
+    break;
+
+    case 'UpdateDeliveryStatus' :
+    // CheckValidSession( $conn );
+    UpdateDeliveryStatusFn( $conn );
+    break;
+
     default:
     CheckValidSession( $conn );
 }
@@ -156,7 +166,8 @@ function AddProductFn( $conn ) {
     $price2 = mysqli_real_escape_string( $conn, $post['price2'] );
     $price3 = mysqli_real_escape_string( $conn, $post['price3'] );
     $price4 = mysqli_real_escape_string( $conn, $post['price4'] );
-    $image = $post['image'];;
+    $image = $post['image'];
+    ;
 
     $sql = "INSERT INTO products (productType, productName, productDescription, price1,price2,price3,price4,image,disable,outOfStock) VALUES ('".$productType."', '".$productName."', '".$productDescription."', $price1,$price2,$price3,$price4,'".$image."',false,false)";
 
@@ -168,12 +179,6 @@ function AddProductFn( $conn ) {
     } else {
         Error( 'Error: ' . $sql . '<br>' . $conn->error );
     }
-
-    //$img = $post['image'];
-    //$sql = "INSERT INTO productimages (image) VALUES ('".$img."')";
-    //echo $sql;
-    //$res = $conn->query( $sql );
-    //echo $res;
 }
 
 function SetProductFlagsFn( $conn ) {
@@ -225,6 +230,89 @@ function GetOrdersFn( $conn ) {
         }
 
         $Obj->orders = $ordersArr;
+        Success( $Obj );
+    } else {
+        Error( 'Error: ' . $sql . '<br>' . $conn->error );
+    }
+}
+
+function GetOrderDetailsFn( $conn ) {
+    $post = GetPostJson();
+    $orderId = mysqli_real_escape_string( $conn, $post['orderId'] );
+
+    $sql_orders = 'SELECT * FROM orders WHERE id ='.$orderId;
+    $result_orders = $conn->query( $sql_orders );
+    if ( $result_orders->num_rows > 0 ) {
+        $Obj =  new \stdClass();
+        while( $row_orders = $result_orders->fetch_assoc() ) {
+            $Obj->id = $row_orders['id'];
+            $Obj->customerName = $row_orders['customerName'];
+            $Obj->billAmount = $row_orders['billAmount'];
+            $Obj->customerAddress = $row_orders['customerAddress'];
+            $Obj->contactNumber = $row_orders['contactNumber'];
+            $Obj->deliveryStatus = $row_orders['deliveryStatus'];
+        }
+
+        $Obj->products = getOrderproducts( $orderId, $conn );
+        Success( $Obj );
+    } else {
+        Error( 'Error: <br>' . $conn->error );
+    }
+}
+
+function getOrderproducts( $orderId, $conn ) {
+    $sql_orderproducts = 'SELECT * FROM orderproducts WHERE orderId ='.$orderId;
+    $result_orderproducts = $conn->query( $sql_orderproducts );
+    $orderDetailsArr = array();
+
+    if ( $result_orderproducts->num_rows > 0 ) {
+        while( $row_orderproducts = $result_orderproducts->fetch_assoc() ) {
+            $product = getProducts( $row_orderproducts['prodId'], $conn );
+            $row_orderproducts['productType'] = $product->productType;
+            $row_orderproducts['productName'] = $product->productName;
+            $row_orderproducts['price1'] = $product->price1;
+            $row_orderproducts['price2'] = $product->price2;
+            $row_orderproducts['price3'] = $product->price3;
+            $row_orderproducts['price4'] = $product->price4;
+            $row_orderproducts['image'] = $product->image;
+
+            array_push( $orderDetailsArr, $row_orderproducts );
+        }
+
+        return $orderDetailsArr;
+    }
+}
+
+function getProducts( $prodId, $conn ) {
+    $sql_products = 'SELECT productName,productType,price1,price2,price3,price4,image FROM products WHERE id ='.$prodId;
+    $result_products = $conn->query( $sql_products );
+
+    $Obj =  new \stdClass();
+    if ( $result_products->num_rows > 0 ) {
+        while( $row_products = $result_products->fetch_assoc() ) {
+            $Obj->productType = $row_products['productType'];
+            $Obj->productName = $row_products['productName'];
+            $Obj->price1 = $row_products['price1'];
+            $Obj->price2 = $row_products['price2'];
+            $Obj->price3 = $row_products['price3'];
+            $Obj->price4 = $row_products['price4'];
+            $Obj->image = $row_products['image'];
+        }
+    }
+
+    return $Obj;
+}
+
+function UpdateDeliveryStatusFn( $conn ) {
+    $post = GetPostJson();
+    $orderId = mysqli_real_escape_string( $conn, $post['orderId'] );
+    $status = mysqli_real_escape_string( $conn, $post['status'] );
+
+    $sql = "UPDATE orders SET deliveryStatus='".$status."' WHERE id = $orderId";
+
+    if ( $conn->query( $sql ) === TRUE ) {
+        $Obj =  new \stdClass();
+        $Obj->msg = 'Record updated successfully';
         Success( $Obj );
     } else {
         Error( 'Error: ' . $sql . '<br>' . $conn->error );
