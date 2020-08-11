@@ -11,6 +11,7 @@ export class HeaderAdminComponent implements OnInit {
 
   showFilter: boolean = false;
   showAddStore: boolean = false;
+  progressBarVisible: boolean = false;
 
   constructor(private route: ActivatedRoute) { }
 

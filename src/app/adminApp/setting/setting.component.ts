@@ -12,4 +12,6 @@ export class SettingComponent implements OnInit {
   ngOnInit() {
   }
 
+  countChange($event) {}
+
 }

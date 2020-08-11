@@ -96,7 +96,7 @@ export class AddProductComponent {
     });
   }
 
-  countChange() {}
+  countChange($event) {}
 
   handleFileInput(files: FileList) {
     const file = files.item(0);

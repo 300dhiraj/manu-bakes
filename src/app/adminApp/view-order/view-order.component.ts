@@ -13,7 +13,7 @@ import { Router } from "@angular/router";
 })
 export class ViewOrderComponent implements OnInit {
   order_id: number;
-  order: OrderDetail = [];
+  order: OrderDetail;
   products;
 
 
