@@ -17,37 +17,37 @@ switch( $API_NAME ) {
     break;
 
     case 'GetProduct' :
-    // CheckValidSession( $conn );
+    CheckValidSession( $conn );
     GetProductFn( $conn );
     break;
 
     case 'AddProduct' :
-    // CheckValidSession( $conn );
+    CheckValidSession( $conn );
     AddProductFn( $conn );
     break;
 
     case 'SetProductFlags' :
-    // CheckValidSession( $conn );
+    CheckValidSession( $conn );
     SetProductFlagsFn( $conn );
     break;
 
     case 'deleteProduct' :
-    // CheckValidSession( $conn );
+    CheckValidSession( $conn );
     deleteProductFn( $conn );
     break;
 
     case 'GetOrders' :
-    // CheckValidSession( $conn );
+    CheckValidSession( $conn );
     GetOrdersFn( $conn );
     break;
 
     case 'GetOrderDetails' :
-    // CheckValidSession( $conn );
+    CheckValidSession( $conn );
     GetOrderDetailsFn( $conn );
     break;
 
     case 'UpdateDeliveryStatus' :
-    // CheckValidSession( $conn );
+    CheckValidSession( $conn );
     UpdateDeliveryStatusFn( $conn );
     break;
 

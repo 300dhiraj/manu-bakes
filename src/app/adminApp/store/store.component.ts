@@ -33,7 +33,7 @@ export class StoreComponent implements OnInit {
 
   countChange(event) {}
 
-  deliveryOrderDialog(id) {
+  deliveryOrderDeleteDialog(id) {
     const dialogRef = this.dialog.open(DeliveryConfirmationDialogComponent);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {

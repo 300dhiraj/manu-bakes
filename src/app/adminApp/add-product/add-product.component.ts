@@ -20,7 +20,9 @@ export class AddProductComponent {
     this.createForm();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.httpService.getHeader();
+  }
 
   createForm() {
     this.formGroup = this.formBuilder.group({
@@ -102,7 +104,7 @@ export class AddProductComponent {
     if (fsize >= 512) {
       alert("File too Big, please select a file less than 512Kb");
       return;
-    } 
+    }
 
     const reader = new FileReader();
     reader.readAsDataURL(file);

@@ -14,7 +14,7 @@ export class HttpService {
 
   getHeader() {
     if (!this.token) {
-      //this.router.navigate(["/Admin"]);
+      this.router.navigate(["/Admin"]);
     }
 
     const httpHeaders: HttpHeaders = new HttpHeaders({
@@ -48,15 +48,27 @@ export class HttpService {
   }
 
   addProduct(data: Object): Observable<Object> {
-    return this.httpClient.post(this.apiBaseUrl + "AddProduct", data);
+    return this.httpClient.post(
+      this.apiBaseUrl + "AddProduct",
+      data,
+      this.getHeader()
+    );
   }
 
   setProductFlags(data: Object): Observable<Object> {
-    return this.httpClient.post(this.apiBaseUrl + "SetProductFlags", data);
+    return this.httpClient.post(
+      this.apiBaseUrl + "SetProductFlags",
+      data,
+      this.getHeader()
+    );
   }
 
   deleteProduct(data: Object): Observable<Object> {
-    return this.httpClient.post(this.apiBaseUrl + "deleteProduct", data);
+    return this.httpClient.post(
+      this.apiBaseUrl + "deleteProduct",
+      data,
+      this.getHeader()
+    );
   }
 
   getOrders() {
@@ -64,10 +76,18 @@ export class HttpService {
   }
 
   getOrderDetails(data: Object) {
-    return this.httpClient.post(this.apiBaseUrl + "GetOrderDetails", data);
+    return this.httpClient.post(
+      this.apiBaseUrl + "GetOrderDetails",
+      data,
+      this.getHeader()
+    );
   }
 
   UpdateDeliveryStatus(data: Object) {
-    return this.httpClient.post(this.apiBaseUrl + "UpdateDeliveryStatus", data);
+    return this.httpClient.post(
+      this.apiBaseUrl + "UpdateDeliveryStatus",
+      data,
+      this.getHeader()
+    );
   }
 }
