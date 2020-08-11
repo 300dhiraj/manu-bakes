@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 })
 export class HttpService {
   apiBaseUrl = "http://localhost/manu-bakes/Api/index.php?";
+  //apiBaseUrl = "http://manu-bakes.freevar.com/index.php?";
   token = "";
 
   constructor(private httpClient: HttpClient, private router: Router) {}

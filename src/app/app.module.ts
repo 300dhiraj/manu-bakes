@@ -19,6 +19,7 @@ import { StoreComponent } from './adminApp/store/store.component';
 import { SettingComponent } from './adminApp/setting/setting.component';
 import { DeleteProductDialogComponent } from './adminApp/dialog/delete-product-dialog/delete-product-dialog.component';
 import { AddProductComponent } from './adminApp/add-product/add-product.component';
+import { WelcomeComponent } from './userApp/welcome/welcome.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { AddProductComponent } from './adminApp/add-product/add-product.componen
     SettingComponent,
     DeleteProductDialogComponent,
     AddProductComponent,
+    WelcomeComponent,
   ],
   imports: [
     BrowserModule,
